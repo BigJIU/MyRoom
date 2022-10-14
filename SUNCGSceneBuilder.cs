@@ -100,7 +100,7 @@ namespace SUNCGData
             {
                 foreach (var nodeSub in node.subItems)
                 {
-                    NewFurBuild(nodeSub,furnitureTemp.transform,raw);
+                    NewSubItemBuild(nodeSub,furnitureTemp.transform);
                 }
             }
 
@@ -113,6 +113,32 @@ namespace SUNCGData
                 string mname = raw ? "raw" : "normalized";
                 var objPath = $"{Config.ModelPath}{node.modelId}\\{mname}_model.obj";
                 var mtlPath = $"{Config.ModelPath}{node.modelId}\\model.mtl";
+
+                float[,] innerTrans = new float[4,4];
+
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        innerTrans[i, j] = node.transform[i+j*4];
+                        // innerTrans[i, j] = node.transform[i][j];
+                    }
+                }
+
+                furnitureTemp = new OBJLoader().Load(objPath, mtlPath ,innerTrans);
+                furnitureTemp.name = node.id;
+                furnitureTemp.transform.SetParent(parent);
+            }
+        }
+        
+        
+        public static void NewSubItemBuild(SubNode node, Transform parent)
+        {
+            GameObject furnitureTemp = null;
+            if (node.type == "Item")
+            {
+                var objPath = $"{Config.ItemPath}\\{node.modelId}\\{node.modelId}.obj";
+                var mtlPath = $"{Config.ItemPath}\\{node.modelId}\\{node.modelId}.mtl";
 
                 float[,] innerTrans = new float[4,4];
 
