@@ -4,12 +4,13 @@ using UnityEngine.UI;
 
 public static class Config
 {
-    public static string ModelPath = @"E:\3DFront\3D-FUTURE-model\3D-FUTURE-model\";
-    public static string HomePath = @"E:\3DFront\room\room\";
+    public static string ModelPath = @"D:\3DFront\3D-FUTURE-model\3D-FUTURE-model\";
+    public static string ItemPath = @"D:\3DFront\Items\";
+    public static string HomePath = @"D:\3DFront\room\room\";
 
-    public static string sourcePath = @"E:\3DFront\";
+    public static string sourcePath = @"D:\3DFront\";
 
-    public static string logPath = @"E:\3DFront\";
+    public static string logPath = @"D:\3DFront\";
 
     public static Texture2D wallTexture;
     public static Texture2D floorTexture;
