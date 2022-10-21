@@ -1,8 +1,7 @@
-
+#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.IO;
-
 using SUNCGData;
 using UnityEngine;
 using Newtonsoft.Json;
@@ -61,18 +60,19 @@ public class SceneImporter: ScriptableWizard
         Config.wallTexture = wallTexture;
     }
 
-    public void NewRoom(GameObject json)
+    /*public void NewRoom(GameObject json)
     {
         Generate(json.GetComponent<InputField>().text);
         var center = SUNCGSceneBuilder.NewRoomBuild(dataSUCNG,avaRoom[0],existWall,useRawModel);
         //FindObjectOfType<FirstPersonController>().center = center;
-    }
+    }*/
     
     [MenuItem("RoomViewer/Generate")]
     void GenerateRoom(string input = null)
     {
         Debug.Log("wow");
         Generate(input);
+        ViewerWindow.ClearRoom();
         SUNCGSceneBuilder.NewRoomBuild(dataSUCNG,avaRoom[0],existWall,useRawModel);
     }
     
@@ -124,3 +124,4 @@ public class SceneImporter: ScriptableWizard
 
 
 }
+#endif

@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,10 +13,10 @@ namespace SUNCGData
         static void ExportJsonFromData(SUNCGDataStructure SUNCGdata)
         {
             //string content = JsonUtility.ToJson(SUNCGdata);
-            string content = JsonConvert.SerializeObject(SUNCGdata, Formatting.Indented, new JsonSerializerSettings
+            string content = JsonConvert.SerializeObject(SUNCGdata,Formatting.Indented, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
-            }).Replace('\n',' ');
+            });
             
             
             string lastPath = EditorPrefs.GetString("a4_OBJExport_lastPath", "");
@@ -104,3 +105,4 @@ namespace SUNCGData
 Debug.Log(objTrans.worldToLocalMatrix);
 Debug.Log(objTrans.position);
 Debug.Log(objTrans.localPosition);*/
+#endif

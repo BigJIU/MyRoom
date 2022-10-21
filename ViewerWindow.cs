@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+#if UNITY_EDITOR
 using SUNCGData;
 using UnityEditor;
 using UnityEngine;
@@ -87,5 +86,30 @@ public class ViewerWindow : EditorWindow
         SUNCGdata = s;
         SUNCGAvaRoom = avaRoom;
     }
+    public class PublicConfig : ScriptableWizard
+    {
+        public string ModelPath = Config.ModelPath;
+        public string HomePath = Config.HomePath;
+
+        public string sourcePath = Config.sourcePath;
+
+        public string logPath = Config.logPath;
+    
+        void OnWizardCreate()
+        {
+            changeConfig();
+            end:;
+        }
+
+        void changeConfig()
+        {
+            Config.ModelPath = ModelPath;
+            Config.HomePath = HomePath;
+            Config.sourcePath = sourcePath;
+            Config.logPath = logPath;
+        }
+    
+    }
     
 }
+#endif

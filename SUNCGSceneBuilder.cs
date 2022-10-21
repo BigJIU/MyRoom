@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿
+using System.Linq;
 using Dummiesman;
-using UnityEditor;
 using UnityEngine;
 
 namespace SUNCGData
@@ -17,22 +17,23 @@ namespace SUNCGData
         /// <param name="raw"> If the obj is raw model</param>
         /// <param name="parent"> The parent GameObject it need to belong to</param>
         /// <returns> Return the center position of the Room </returns>
-        public static Vector3 NewRoomBuild(SUNCGDataStructure data, Node node,bool wall,bool raw, Transform parent = null)
+        public static Vector3 NewRoomBuild(SUNCGDataStructure data, Node node, bool wall, bool raw,
+            Transform parent = null)
         {
 
-            ViewerWindow.ClearRoom();
+            
             GameObject roomGameObject = new GameObject($"{node.modelId}");
             roomGameObject.tag = "Room";
 
             parent = roomGameObject.transform;
-            Vector3 center=Vector3.zero;
-            
+            Vector3 center = Vector3.zero;
+
             //FIXME
             if (wall)
             {
                 center = NewWallBuild(data.id, node, parent);
             }
-            
+
 
             foreach (int nodeid in node.nodeIndices)
             {
@@ -44,8 +45,9 @@ namespace SUNCGData
                         NewFurBuild(data.levels[0].nodes[d], parent, raw);
                     }
                 }
-                
+
             }
+
             return center;
         }
 
@@ -56,11 +58,11 @@ namespace SUNCGData
             string floorPath = $"{Config.HomePath}{houseId}\\{node.modelId}f.obj";
             string wallMtl = $"{Application.dataPath}\\wall.mtl";
             string floorlMtl = $"{Application.dataPath}\\floor.mtl";
-            
+
             Utils.EditFloorFormat(floorPath);
-            var wall = new OBJLoader().Load(wallPath,wallMtl,null);
+            var wall = new OBJLoader().Load(wallPath, wallMtl, null);
             wall.transform.SetParent(parent);
-            var floor = new OBJLoader().Load(floorPath,floorlMtl,null);
+            var floor = new OBJLoader().Load(floorPath, floorlMtl, null);
 
             floor.transform.SetParent(parent);
             var center = CalculateCenter(floor.GetComponentInChildren<MeshFilter>().sharedMesh.vertices);
@@ -68,7 +70,7 @@ namespace SUNCGData
             return center;
         }
 
-        
+
 
 
         public static void NewFurBuild(Node node, Transform parent, bool raw)
@@ -80,18 +82,18 @@ namespace SUNCGData
                 var objPath = $"{Config.ModelPath}{node.modelId}\\{mname}_model.obj";
                 var mtlPath = $"{Config.ModelPath}{node.modelId}\\model.mtl";
 
-            float[,] innerTrans = new float[4,4];
+                float[,] innerTrans = new float[4, 4];
 
-            for (int i = 0; i < 4; i++)
-            {
-                for (int j = 0; j < 4; j++)
+                for (int i = 0; i < 4; i++)
                 {
-                    innerTrans[i, j] = node.transform[i+j*4];
-                    // innerTrans[i, j] = node.transform[i][j];
+                    for (int j = 0; j < 4; j++)
+                    {
+                        innerTrans[i, j] = node.transform[i + j * 4];
+                        // innerTrans[i, j] = node.transform[i][j];
+                    }
                 }
-            }
 
-                furnitureTemp = new OBJLoader().Load(objPath, mtlPath ,innerTrans);
+                furnitureTemp = new OBJLoader().Load(objPath, mtlPath, innerTrans);
                 furnitureTemp.name = node.id;
                 furnitureTemp.transform.SetParent(parent);
             }
@@ -100,7 +102,7 @@ namespace SUNCGData
             {
                 foreach (var nodeSub in node.subItems)
                 {
-                    NewSubItemBuild(nodeSub,furnitureTemp.transform);
+                    NewSubItemBuild(nodeSub, furnitureTemp.transform);
                 }
             }
 
@@ -115,33 +117,30 @@ namespace SUNCGData
                 var objPath = $"{Config.ItemPath}\\{node.modelId}\\{node.modelId}.obj";
                 var mtlPath = $"{Config.ItemPath}\\{node.modelId}\\{node.modelId}.mtl";
 
-                float[,] innerTrans = new float[4,4];
+                float[,] innerTrans = new float[4, 4];
 
                 for (int i = 0; i < 4; i++)
                 {
                     for (int j = 0; j < 4; j++)
                     {
-                        innerTrans[i, j] = node.transform[i+j*4];
+                        innerTrans[i, j] = node.transform[i + j * 4];
                         // innerTrans[i, j] = node.transform[i][j];
                     }
                 }
 
-                furnitureTemp = new OBJLoader().Load(objPath, mtlPath ,innerTrans);
+                furnitureTemp = new OBJLoader().Load(objPath, mtlPath, innerTrans);
                 furnitureTemp.name = node.id;
                 furnitureTemp.transform.SetParent(parent);
             }
         }
-        
+
         static Vector3 CalculateCenter(Vector3[] vecs)
         {
             Vector3 vec = Vector3.zero;
-            vecs.ToList().ForEach((v) =>
-            {
-                vec += v;
-            });
+            vecs.ToList().ForEach((v) => { vec += v; });
             return vec / vecs.Length;
         }
-        
-        
+
+
     }
 }
