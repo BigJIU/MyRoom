@@ -60,8 +60,12 @@ public class ViewerWindow : EditorWindow
         {
             ScriptableWizard.DisplayWizard("Export OBJ", typeof(OBJExporter), "Export");
         }
+        if (GUILayout.Button("Add SubItem"))
+        {
+            ScriptableWizard.DisplayWizard("Import SubItem", typeof(SubItemImporter), "Import");
+        }
         
-        //文本标签
+        /*//文本标签
         EditorGUILayout.LabelField("RoomId");
         string a = "RoomID";
         a= EditorGUILayout.TextField(a);
@@ -72,7 +76,7 @@ public class ViewerWindow : EditorWindow
         
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("WallExist");
-        this.mWall = EditorGUILayout.Toggle(this.mWall);
+        this.mWall = EditorGUILayout.Toggle(this.mWall);*/
         
     }
     
