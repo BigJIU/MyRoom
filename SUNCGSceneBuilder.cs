@@ -105,33 +105,8 @@ namespace SUNCGData
             }
 
         }
-        public static void NewFurBuild(SubNode node, Transform parent, bool raw)
-        {
-            GameObject furnitureTemp = null;
-            if (node.type != "Room")
-            {
-                string mname = raw ? "raw" : "normalized";
-                var objPath = $"{Config.ModelPath}{node.modelId}\\{mname}_model.obj";
-                var mtlPath = $"{Config.ModelPath}{node.modelId}\\model.mtl";
 
-                float[,] innerTrans = new float[4,4];
 
-                for (int i = 0; i < 4; i++)
-                {
-                    for (int j = 0; j < 4; j++)
-                    {
-                        innerTrans[i, j] = node.transform[i+j*4];
-                        // innerTrans[i, j] = node.transform[i][j];
-                    }
-                }
-
-                furnitureTemp = new OBJLoader().Load(objPath, mtlPath ,innerTrans);
-                furnitureTemp.name = node.id;
-                furnitureTemp.transform.SetParent(parent);
-            }
-        }
-        
-        
         public static void NewSubItemBuild(SubNode node, Transform parent)
         {
             GameObject furnitureTemp = null;

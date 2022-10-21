@@ -12,10 +12,10 @@ namespace SUNCGData
         static void ExportJsonFromData(SUNCGDataStructure SUNCGdata)
         {
             //string content = JsonUtility.ToJson(SUNCGdata);
-            string content = JsonConvert.SerializeObject(SUNCGdata,Formatting.Indented, new JsonSerializerSettings
+            string content = JsonConvert.SerializeObject(SUNCGdata, Formatting.Indented, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
-            });
+            }).Replace('\n',' ');
             
             
             string lastPath = EditorPrefs.GetString("a4_OBJExport_lastPath", "");
