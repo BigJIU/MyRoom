@@ -59,14 +59,15 @@ namespace SUNCGData
         }
         public static void ExportJSON(SUNCGDataStructure SUNCGdata, Node avaRoom)
         {
+            SUNCGDataStructure tmpSUNCGData = deepCopy(SUNCGdata);
             foreach (int nodeid in avaRoom.nodeIndices)
             {
                 //Debug.Log("Onbuilding "+ nodeid);
-                for (int d = 0; d < SUNCGdata.levels[0].nodes.Length; d++)
+                for (int d = 0; d < tmpSUNCGData.levels[0].nodes.Length; d++)
                 {
-                    if (SUNCGdata.levels[0].nodes[d].id.Split('_')[1] == $"{nodeid}")
+                    if (tmpSUNCGData.levels[0].nodes[d].id.Split('_')[1] == $"{nodeid}")
                     {
-                        Node node = SUNCGdata.levels[0].nodes[d];
+                        Node node = tmpSUNCGData.levels[0].nodes[d];
                         node.transform = matrixMul(node.transform,getTransform(node.id),4);
                         if (node.subItems != null)
                         {
@@ -81,7 +82,7 @@ namespace SUNCGData
                 
             }
             
-            ExportJsonFromData(SUNCGdata);
+            ExportJsonFromData(tmpSUNCGData);
             
         }
 
@@ -98,6 +99,14 @@ namespace SUNCGData
             }
             return o;
         }
+        
+        public static T deepCopy<T>(T source)
+        {
+            string jsonStr = JsonConvert.SerializeObject(source);
+            return JsonConvert.DeserializeObject<T>(jsonStr);
+        }
+
+        
     }
 }
 

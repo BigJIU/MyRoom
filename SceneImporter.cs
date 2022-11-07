@@ -11,9 +11,6 @@ using UnityEngine.UI;
 [Serializable]
 public class SceneImporter: ScriptableWizard
 {
-    // Start is called before the first frame update
-    //public static FrontDataStructure data;
-    
     private SUNCGDataStructure dataSUCNG;
     private List<Node> avaRoom;
     public  Texture2D floorTexture;
@@ -22,56 +19,50 @@ public class SceneImporter: ScriptableWizard
     public string stringJson;
     public  bool existWall = true;
     public  bool useRawModel = true;
-    
-    public Text DebugText;
-    
-    void Generate(string j = null)
-    {
-        
-        if (!string.IsNullOrEmpty(j))
-        {
-            stringJson = j;
-        }
 
-        
-        string path = $@"E:\3DFront\json\{houseId}.json";
-        if (string.IsNullOrEmpty(stringJson))
+    public static T GenerateData<T>(string inputStr,string inputHouseId)
+    {
+        // Get dataSUNCG
+        if (string.IsNullOrEmpty(inputStr))
         {
-            dataSUCNG = JsonConvert.DeserializeObject<SUNCGDataStructure>(File.ReadAllText(path));
+            // Read by houseID
+            string path = $@"E:\3DFront\json\{inputHouseId}.json";
+            return JsonConvert.DeserializeObject<T>(File.ReadAllText(path));
         }
         else
         {
-            dataSUCNG = JsonConvert.DeserializeObject<SUNCGDataStructure>(stringJson);
+            // Read by stringJson Content
+            return JsonConvert.DeserializeObject<T>(inputStr);
         }
-
-
-        avaRoom = new List<Node>();
-        Debug.Log("Room JID:"+dataSUCNG.levels[0].nodes[0].modelId);
-        foreach (Node node in dataSUCNG.levels[0].nodes)
+    }
+    
+    public static List<Node> GenerateSUNCGRoom (SUNCGDataStructure SUNCGData)
+    {
+        // Get avaRoom
+        List<Node> tmpRoom = new List<Node>();
+        Debug.Log("Room JID:"+SUNCGData.levels[0].nodes[0].modelId);
+        foreach (Node node in SUNCGData.levels[0].nodes)
         {
             if (node.roomTypes != null&&node.nodeIndices.Length>0)
             {
-                avaRoom.Add(node);
+                tmpRoom.Add(node);
                 break;
             }
         }
 
-        Config.floorTexture = floorTexture;
-        Config.wallTexture = wallTexture;
-    }
+        return tmpRoom;
 
-    /*public void NewRoom(GameObject json)
-    {
-        Generate(json.GetComponent<InputField>().text);
-        var center = SUNCGSceneBuilder.NewRoomBuild(dataSUCNG,avaRoom[0],existWall,useRawModel);
-        //FindObjectOfType<FirstPersonController>().center = center;
-    }*/
+    }
+    
     
     [MenuItem("RoomViewer/Generate")]
     void GenerateRoom(string input = null)
     {
-        Debug.Log("wow");
-        Generate(input);
+        Debug.Log("GenerateRoom");
+        dataSUCNG = GenerateData<SUNCGDataStructure>(input,houseId);
+        avaRoom = GenerateSUNCGRoom(dataSUCNG);
+        Config.floorTexture = floorTexture;
+        Config.wallTexture = wallTexture;
         ViewerWindow.ClearRoom();
         SUNCGSceneBuilder.NewRoomBuild(dataSUCNG,avaRoom[0],existWall,useRawModel);
     }
@@ -121,7 +112,12 @@ public class SceneImporter: ScriptableWizard
     //     return t2d;
     // }
 
-
+    /*public void NewRoom(GameObject json)
+    {
+        Generate(json.GetComponent<InputField>().text);
+        var center = SUNCGSceneBuilder.NewRoomBuild(dataSUCNG,avaRoom[0],existWall,useRawModel);
+        //FindObjectOfType<FirstPersonController>().center = center;
+    }*/
 
 }
 #endif
