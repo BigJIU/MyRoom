@@ -54,7 +54,8 @@ public class ViewerWindow : EditorWindow
         }
         if (GUILayout.Button("Export JSON"))
         {
-            SUNCGSceneExporter.ExportJSON(SUNCGdata,SUNCGAvaRoom);
+            ;
+            SUNCGSceneExporter.ExportJsonFromData(SUNCGSceneExporter.GenerateDataFromScene());
         }
         if (GUILayout.Button("Export OBJ"))
         {
@@ -63,6 +64,10 @@ public class ViewerWindow : EditorWindow
         if (GUILayout.Button("Add SubItem"))
         {
             ScriptableWizard.DisplayWizard("Import SubItem", typeof(SubItemImporter), "Import");
+        }
+        if (GUILayout.Button("Add Item"))
+        {
+            ScriptableWizard.DisplayWizard("Import Item", typeof(ItemImporter), "Import");
         }
         
         /*//文本标签
@@ -81,15 +86,7 @@ public class ViewerWindow : EditorWindow
     }
     
     
-    //Logic Related
-    private static SUNCGDataStructure SUNCGdata;
-    private static Node SUNCGAvaRoom;
 
-    public static void UpdateSUNCGData(SUNCGDataStructure s,Node avaRoom)
-    {
-        SUNCGdata = s;
-        SUNCGAvaRoom = avaRoom;
-    }
     public class PublicConfig : ScriptableWizard
     {
         public string ModelPath = Config.ModelPath;

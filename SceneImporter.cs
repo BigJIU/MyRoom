@@ -15,25 +15,14 @@ public class SceneImporter: ScriptableWizard
     private List<Node> avaRoom;
     public  Texture2D floorTexture;
     public  Texture2D wallTexture;
-    public  string houseId = "76";
+    public  string houseId;
     public string stringJson;
     public  bool existWall = true;
     public  bool useRawModel = true;
 
-    public static T GenerateData<T>(string inputStr,string inputHouseId)
+    public static T GenerateData<T>(string inputStr)
     {
-        // Get dataSUNCG
-        if (string.IsNullOrEmpty(inputStr))
-        {
-            // Read by houseID
-            string path = $@"E:\3DFront\json\{inputHouseId}.json";
-            return JsonConvert.DeserializeObject<T>(File.ReadAllText(path));
-        }
-        else
-        {
-            // Read by stringJson Content
-            return JsonConvert.DeserializeObject<T>(inputStr);
-        }
+        return JsonConvert.DeserializeObject<T>(inputStr);
     }
     
     public static List<Node> GenerateSUNCGRoom (SUNCGDataStructure SUNCGData)
@@ -59,7 +48,22 @@ public class SceneImporter: ScriptableWizard
     void GenerateRoom(string input = null)
     {
         Debug.Log("GenerateRoom");
-        dataSUCNG = GenerateData<SUNCGDataStructure>(input,houseId);
+        // Get dataSUNCG
+        if (string.IsNullOrEmpty(input))
+        {
+            // Read by houseID
+            if (!string.IsNullOrEmpty(houseId))
+            {
+                string path = $@"E:\3DFront\json\{houseId}.json";
+                EditorPrefs.SetString("origin_JSON",File.ReadAllText(path));
+            }
+        }
+        else
+        {
+            // Read by stringJson Content
+            EditorPrefs.SetString("origin_JSON",input);
+        }
+        dataSUCNG = GenerateData<SUNCGDataStructure>(EditorPrefs.GetString("origin_JSON"));
         avaRoom = GenerateSUNCGRoom(dataSUCNG);
         Config.floorTexture = floorTexture;
         Config.wallTexture = wallTexture;
@@ -70,7 +74,6 @@ public class SceneImporter: ScriptableWizard
     void OnWizardCreate()
     {
         GenerateRoom(stringJson);
-        ViewerWindow.UpdateSUNCGData(dataSUCNG,avaRoom[0]);
         end:;
     }
 

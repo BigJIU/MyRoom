@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace SUNCGData
 {
     public class SUNCGSceneExporter
     {
-        static void ExportJsonFromData(SUNCGDataStructure SUNCGdata)
+        public static void ExportJsonFromData(SUNCGDataStructure SUNCGdata)
         {
             //string content = JsonUtility.ToJson(SUNCGdata);
             string content = JsonConvert.SerializeObject(SUNCGdata,Formatting.Indented, new JsonSerializerSettings
@@ -57,9 +58,11 @@ namespace SUNCGData
             return new float[]{ m.m00,m.m10,m.m20,m.m30,m.m01,m.m11,m.m21,m.m31,m.m02,m.m12,m.m22,m.m32,m.m03,m.m13,m.m23,m.m33}
             ;
         }
-        public static void ExportJSON(SUNCGDataStructure SUNCGdata, Node avaRoom)
+        public static SUNCGDataStructure GenerateDataFromScene()
         {
-            SUNCGDataStructure tmpSUNCGData = deepCopy(SUNCGdata);
+            SUNCGDataStructure dataSUCNG = SceneImporter.GenerateData<SUNCGDataStructure>(EditorPrefs.GetString("origin_JSON"));
+            Node avaRoom = SceneImporter.GenerateSUNCGRoom(dataSUCNG)[0];
+            SUNCGDataStructure tmpSUNCGData = deepCopy(dataSUCNG);
             foreach (int nodeid in avaRoom.nodeIndices)
             {
                 //Debug.Log("Onbuilding "+ nodeid);
@@ -81,8 +84,9 @@ namespace SUNCGData
                 }
                 
             }
+
+            return tmpSUNCGData;
             
-            ExportJsonFromData(tmpSUNCGData);
             
         }
 
