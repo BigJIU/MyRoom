@@ -15,7 +15,7 @@ namespace SUNCGData
             string content = JsonConvert.SerializeObject(SUNCGdata, Formatting.Indented, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
-            }).Replace('\n',' ');
+            }).Replace("\n","").Replace(" ","").Replace("\r","");
             
             
             string lastPath = EditorPrefs.GetString("a4_OBJExport_lastPath", "");
@@ -28,11 +28,15 @@ namespace SUNCGData
                 EditorPrefs.SetString("a4_OBJExport_lastPath", fi.Directory.FullName);
                 
                 
-                byte[] databyte = Encoding.UTF8.GetBytes(content);
-                Debug.Log(content);
 
-                FileStream jsonFileStream = File.Create(expFile);
-                jsonFileStream.Write(databyte, 0, databyte.Count());
+                using( FileStream jsonFileStream = File.Create(expFile) ){
+                    byte[] databyte = Encoding.UTF8.GetBytes(content);
+                    jsonFileStream.Write(databyte, 0, databyte.Count());
+                }
+                    Debug.Log(content);
+                    // Debug.Log("Save Ended");
+
+
 
             }
         }
