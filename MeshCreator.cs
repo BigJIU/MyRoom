@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //如果添加的对象上没有MeshFilter，则给对象添加一个MeshFilter

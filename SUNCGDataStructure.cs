@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace SUNCGData
@@ -43,7 +42,17 @@ namespace SUNCGData
         public int[] nodeIndices;
         public string instanceid;
         public SubNode[] subItems;
+        
+        public Node(string modelId,string id)
+        {
+            type = "Object";
+            valid = 1;
+            transform = new float[] { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
+            this.modelId = modelId;
+            this.id = id;
+        }
     }
+    
     [Serializable]
     public class SubNode
     {
@@ -58,6 +67,14 @@ namespace SUNCGData
         public bbox bbox;
         public int[] nodeIndices;
         public string instanceid;
+        public SubNode(string modelId,string id)
+        {
+            type = "Item";
+            valid = 1;
+            transform = new float[] { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
+            this.modelId = modelId;
+            this.id = id;
+        }
     }
     [Serializable]
     public class bbox

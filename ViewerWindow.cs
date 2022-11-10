@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+#if UNITY_EDITOR
 using SUNCGData;
 using UnityEditor;
 using UnityEngine;
@@ -55,14 +54,23 @@ public class ViewerWindow : EditorWindow
         }
         if (GUILayout.Button("Export JSON"))
         {
-            SUNCGSceneExporter.ExportJSON(SUNCGdata,SUNCGAvaRoom);
+            ;
+            SUNCGSceneExporter.ExportJsonFromData(SUNCGSceneExporter.GenerateDataFromScene());
         }
         if (GUILayout.Button("Export OBJ"))
         {
             ScriptableWizard.DisplayWizard("Export OBJ", typeof(OBJExporter), "Export");
         }
+        if (GUILayout.Button("Add SubItem"))
+        {
+            ScriptableWizard.DisplayWizard("Import SubItem", typeof(SubItemImporter), "Import");
+        }
+        if (GUILayout.Button("Add Item"))
+        {
+            ScriptableWizard.DisplayWizard("Import Item", typeof(ItemImporter), "Import");
+        }
         
-        //文本标签
+        /*//文本标签
         EditorGUILayout.LabelField("RoomId");
         string a = "RoomID";
         a= EditorGUILayout.TextField(a);
@@ -73,19 +81,36 @@ public class ViewerWindow : EditorWindow
         
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("WallExist");
-        this.mWall = EditorGUILayout.Toggle(this.mWall);
+        this.mWall = EditorGUILayout.Toggle(this.mWall);*/
         
     }
     
     
-    //Logic Related
-    private static SUNCGDataStructure SUNCGdata;
-    private static Node SUNCGAvaRoom;
 
-    public static void UpdateSUNCGData(SUNCGDataStructure s,Node avaRoom)
+    public class PublicConfig : ScriptableWizard
     {
-        SUNCGdata = s;
-        SUNCGAvaRoom = avaRoom;
+        public string ModelPath = Config.ModelPath;
+        public string HomePath = Config.HomePath;
+
+        public string sourcePath = Config.sourcePath;
+
+        public string logPath = Config.logPath;
+    
+        void OnWizardCreate()
+        {
+            changeConfig();
+            end:;
+        }
+
+        void changeConfig()
+        {
+            Config.ModelPath = ModelPath;
+            Config.HomePath = HomePath;
+            Config.sourcePath = sourcePath;
+            Config.logPath = logPath;
+        }
+    
     }
     
 }
+#endif
