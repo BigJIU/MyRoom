@@ -47,10 +47,15 @@ public class ViewerWindow : EditorWindow
     public void OnGUI ()
     {
         
-        if (GUILayout.Button("Generate"))
+        if (GUILayout.Button("Generate SUNCG"))
         {
             //GenerateRoom(this.mText);
-            ScriptableWizard.DisplayWizard("Generate Room", typeof(SceneImporter), "GenerateRoom");
+            ScriptableWizard.DisplayWizard("Generate Room", typeof(SUNCGSceneImporter), "GenerateRoom");
+        }
+        if (GUILayout.Button("Generate 3DFront"))
+        {
+            //GenerateRoom(this.mText);
+            ScriptableWizard.DisplayWizard("Generate Room", typeof(FrontSceneImporter), "GenerateRoom");
         }
         if (GUILayout.Button("Clear"))
         {

@@ -58,7 +58,7 @@ public class SubItemImporter: ScriptableWizard
     }
     void AddItemToJSON()
     {
-        SUNCGDataStructure SUNCGData = SceneImporter.GenerateData<SUNCGDataStructure>(EditorPrefs.GetString("origin_JSON"));
+        SUNCGDataStructure SUNCGData = SUNCGSceneImporter.GenerateData<SUNCGDataStructure>(EditorPrefs.GetString("origin_JSON"));
         Node fatherNode = SUNCGData.levels[0].nodes.ToList().Find((node => node.id == FatherObject.name));
         if (fatherNode.subItems is null) fatherNode.subItems = new SubNode[0];
         
@@ -132,14 +132,14 @@ public class ItemImporter: ScriptableWizard
     }
     void AddItemToJSON()
     {
-        SUNCGDataStructure SUNCGData = SceneImporter.GenerateData<SUNCGDataStructure>(EditorPrefs.GetString("origin_JSON"));
+        SUNCGDataStructure SUNCGData = SUNCGSceneImporter.GenerateData<SUNCGDataStructure>(EditorPrefs.GetString("origin_JSON"));
         Node[] tmpArray = SUNCGData.levels[0].nodes;
         List<Node> tmpList = tmpArray.ToList();
 
         int id = SUNCGData.levels[0].nodes.Length + 1;
         TargetNode = new Node(lastFileName, $"0_{id}");
         
-        Node Room = SceneImporter.GenerateSUNCGRoom(SUNCGData)[0];
+        Node Room = SUNCGSceneImporter.GenerateSUNCGRoom(SUNCGData)[0];
         List<int> tmpNodeList = Room.nodeIndices.ToList();
         tmpNodeList.Add(id);
         Room.nodeIndices = tmpNodeList.ToArray();
