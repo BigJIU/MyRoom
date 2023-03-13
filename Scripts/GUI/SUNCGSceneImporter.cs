@@ -4,37 +4,43 @@ using System.Collections.Generic;
 using System.IO;
 using SUNCGData;
 using UnityEngine;
-using Newtonsoft.Json;
-using Unity.VisualScripting;
+
 using UnityEditor;
-using UnityEngine.UI;
 
 [Serializable]
-public class SUNCGSceneImporter: ScriptableWizard
+public class SUNCGSceneImporter: SceneImporter
 {
-    private SUNCGDataStructure dataSUCNG;
-    private List<Node> avaRoom;
+
+    /*
     public  Texture2D floorTexture;
     public  Texture2D wallTexture;
     public  string houseId;
-    public string stringJson;
     public  bool existWall = true;
     public  bool existFloor = true;
     public  bool useRawModel = true;
     public GameObject TargetFloor = null;
-    //DrawingScope
+    */
+    
 
-    public static T GenerateData<T>(string inputStr)
+
+    public void BuildRoom()
     {
-        return JsonConvert.DeserializeObject<T>(inputStr);
+        Config.floorTexture = floorTexture;
+        Config.wallTexture = wallTexture;
+        ViewerWindow.ClearRoom();
+        SUNCGDataStructure ds = ImportRoom<SUNCGDataStructure>();
+        Node avaRoom = SelectRoom(ds);
+        SUNCGSceneBuilder.NewRoomBuild(ds,avaRoom,existWall,existFloor,useRawModel,TargetFloor);
+        
     }
     
-    public static List<Node> GenerateSUNCGRoom (SUNCGDataStructure SUNCGData)
+    public static Node SelectRoom (SUNCGDataStructure ds) 
     {
         // Get avaRoom
+        Debug.Log("Importing SUNCG Data");
         List<Node> tmpRoom = new List<Node>();
-        Debug.Log("Room JID:"+SUNCGData.levels[0].nodes[0].modelId);
-        foreach (Node node in SUNCGData.levels[0].nodes)
+        Debug.Log("Room JID:"+ds.levels[0].nodes[0].modelId);
+        foreach (Node node in ds.levels[0].nodes)
         {
             if (node.roomTypes != null&&node.nodeIndices.Length>0)
             {
@@ -42,50 +48,14 @@ public class SUNCGSceneImporter: ScriptableWizard
                 break;
             }
         }
-
-        return tmpRoom;
-
+        return tmpRoom[0];
     }
-    
-    
-    void GenerateRoom(string input = null)
-    {
-        Debug.Log("GenerateRoom");
-        // Get dataSUNCG
-        if (string.IsNullOrEmpty(input))
-        {
-            // Read by houseID
-            if (!string.IsNullOrEmpty(houseId))
-            {
-                Debug.Log("Read from houseID");
-                string path = $@"E:\3DFront\json\{houseId}.json";
-                EditorPrefs.SetString("origin_JSON",File.ReadAllText(path));
-            }
-            else
-            {
-                Debug.Log("Null input");
-                return;
-            }
-        }
-        else
-        {
-            // Read by stringJson Content
-            Debug.Log("Read from str");
-            EditorPrefs.SetString("origin_JSON",input);
-        }
-        dataSUCNG = GenerateData<SUNCGDataStructure>(EditorPrefs.GetString("origin_JSON"));
-        avaRoom = GenerateSUNCGRoom(dataSUCNG);
-        Config.floorTexture = floorTexture;
-        Config.wallTexture = wallTexture;
-        ViewerWindow.ClearRoom();
-        SUNCGSceneBuilder.NewRoomBuild(dataSUCNG,avaRoom[0],existWall,existFloor,useRawModel,TargetFloor);
-    }
-
-    
     void OnWizardCreate()
     {
-        GenerateRoom(stringJson);
+        BuildRoom();
+        //BuildRooms();
     }
+
     
 
 }

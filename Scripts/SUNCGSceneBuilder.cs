@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SUNCGData
 {
-    public class SUNCGSceneBuilder
+    public class SUNCGSceneBuilder:SceneBuilder
     {
 
         /// <summary>
@@ -21,8 +21,6 @@ namespace SUNCGData
         public static void NewRoomBuild(SUNCGDataStructure data, Node node, bool existWall,bool existFloor, bool raw, GameObject floor = null)
         {
             //Basic GameObject Parent
-
-            
             
             GameObject roomGameObject = new GameObject($"{node.modelId}");
             roomGameObject.tag = "Room";

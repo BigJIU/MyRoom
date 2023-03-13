@@ -9,7 +9,7 @@ using UnityEditor;
 
 
 [Serializable]
-public class FrontSceneImporter: ScriptableWizard
+public class FrontSceneImporter:SceneImporter
 {
     private FrontDataStructure dataFront;
     private FrontRoom avaRoom;

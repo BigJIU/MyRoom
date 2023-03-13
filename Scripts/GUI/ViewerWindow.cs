@@ -70,13 +70,13 @@ public class ViewerWindow : EditorWindow
         {
             ScriptableWizard.DisplayWizard("Export OBJ", typeof(OBJExporter), "Export");
         }
-        if (GUILayout.Button("Add SubItem"))
-        {
-            ScriptableWizard.DisplayWizard("Import SubItem", typeof(SubItemImporter), "Import");
-        }
         if (GUILayout.Button("Add Item"))
         {
-            ScriptableWizard.DisplayWizard("Import Item", typeof(ItemImporter), "Import");
+            ScriptableWizard.DisplayWizard("Import Item", typeof(SubItemImporter), "Import");
+        }
+        if (GUILayout.Button("Add Furniture"))
+        {
+            ScriptableWizard.DisplayWizard("Import Furniture", typeof(ItemImporter), "Import");
         }
         
         /*//文本标签

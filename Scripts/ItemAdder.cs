@@ -89,8 +89,10 @@ public class ItemImporter: ScriptableWizard
 {
     public string TargetName;
     public bool raw = true;
+    public GameObject TargetFile;
     private Node TargetNode;
     private string lastFileName;
+    
     void OnWizardCreate()
     {
         if( Application.isPlaying)
@@ -139,7 +141,10 @@ public class ItemImporter: ScriptableWizard
         int id = SUNCGData.levels[0].nodes.Length + 1;
         TargetNode = new Node(lastFileName, $"0_{id}");
         
-        Node Room = SUNCGSceneImporter.GenerateSUNCGRoom(SUNCGData)[0];
+        //Node Room = SUNCGSceneImporter.GenerateSUNCGRoom(SUNCGData)[0];
+        //FIXME: May be Bug
+        Node Room = SUNCGSceneImporter.SelectRoom(SUNCGData);
+            
         List<int> tmpNodeList = Room.nodeIndices.ToList();
         tmpNodeList.Add(id);
         Room.nodeIndices = tmpNodeList.ToArray();

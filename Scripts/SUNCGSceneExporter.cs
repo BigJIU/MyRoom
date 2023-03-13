@@ -65,7 +65,9 @@ namespace SUNCGData
         public static SUNCGDataStructure GenerateDataFromScene()
         {
             SUNCGDataStructure dataSUCNG = SUNCGSceneImporter.GenerateData<SUNCGDataStructure>(EditorPrefs.GetString("origin_JSON"));
-            Node avaRoom = SUNCGSceneImporter.GenerateSUNCGRoom(dataSUCNG)[0];
+            //Node avaRoom = SUNCGSceneImporter.GenerateSUNCGRoom(dataSUCNG)[0];
+            //FIXME: May be Bug
+            Node avaRoom = SUNCGSceneImporter.SelectRoom(dataSUCNG);
             SUNCGDataStructure tmpSUNCGData = deepCopy(dataSUCNG);
             foreach (int nodeid in avaRoom.nodeIndices)
             {

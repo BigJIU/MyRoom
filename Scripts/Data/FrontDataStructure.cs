@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace FrontData
 {
     [Serializable]
-    public class FrontDataStructure
+    public class FrontDataStructure:DataStructure
     {
 
         public string uid;

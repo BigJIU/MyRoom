@@ -6,7 +6,7 @@ namespace SUNCGData
 
 
     [Serializable]
-    public class SUNCGDataStructure
+    public class SUNCGDataStructure:DataStructure
     {
 
         public string id;
