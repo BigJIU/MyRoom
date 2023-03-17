@@ -8,4 +8,4 @@
 
 ## MyRoomEditor's Workflow
 
-![EditorMain](\imgs\EditorMain.png)
+![EditorMain](https://github.com/BigJIU/RoomViewer/blob/main/imgs/EditorMain.png)
